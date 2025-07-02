@@ -28,15 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+       
         title: _isSearching
             ? TextField(
                 controller: _searchController,
                 decoration: const InputDecoration(
                   hintText: 'Buscar películas...',
                   border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.white70),
+                  hintStyle: TextStyle(color: Color.fromARGB(171, 14, 0, 63)),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.black),
                 autofocus: true,
                 onChanged: (value) {
                   movieProvider.searchMovies(value);

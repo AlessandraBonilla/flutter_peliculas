@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ignorar archivos generados automáticamente por Flutter
+generated_plugin_registrant.*

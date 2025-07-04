@@ -76,29 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF181818),
       appBar: AppBar(
-<<<<<<< HEAD
         backgroundColor: const Color(0xFF101010),
         title: const Text('Películas', style: TextStyle(color: Color(0xFFFFC300))),
         centerTitle: true,
         elevation: 4,
-=======
        
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  hintText: 'Buscar películas...',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Color.fromARGB(171, 14, 0, 63)),
-                ),
-                style: const TextStyle(color: Colors.black),
-                autofocus: true,
-                onChanged: (value) {
-                  movieProvider.searchMovies(value);
-                },
-              )
-            : const Text('Películas Populares'),
->>>>>>> 7a49d58f76a71f7e86383f335d9198f65163f64e
+        
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Color(0xFFFFC300)),

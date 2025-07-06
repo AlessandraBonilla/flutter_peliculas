@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart'; 
 import '../providers/movie_provider.dart';
+import '../models/movie.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,17 +13,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
-  bool _isSearching = false;
-
+  bool _isSearching = false; 
   @override
   void initState() {
     super.initState();
-    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    movieProvider.fetchPopularMovies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MovieProvider>(context, listen: false).fetchPopularMovies();
+    });
+  }
+
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   void _showRecommendedMovies(BuildContext context) {
-    debugShowCheckedModeBanner: false;
+
     final recommendedMovies = Provider.of<MovieProvider>(context, listen: false).recommendedMovies;
     showModalBottomSheet(
       context: context,
@@ -49,10 +58,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMovieGallery(MovieProvider movieProvider) {
-    final movies = _isSearching ? movieProvider.searchResults : movieProvider.popularMovies;
-    if (movies.isEmpty) {
-      return const Center(child: Text('No hay películas', style: TextStyle(color: Colors.white70)));
+
+    final movies = movieProvider.popularMovies; 
+
+    if (movieProvider.isLoading) {
+    
+      return const Center(child: CircularProgressIndicator(color: Color(0xFFFFC300)));
+    } else if (movieProvider.error.isNotEmpty) {
+ 
+      return Center(child: Text('Error: ${movieProvider.error}', style: const TextStyle(color: Colors.redAccent)));
+    } else if (movies.isEmpty) {
+
+      return const Center(child: Text('No hay películas para mostrar.', style: TextStyle(color: Colors.white70)));
     }
+
     return GridView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: movies.length,
@@ -71,7 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final movieProvider = Provider.of<MovieProvider>(context);
+
+    final movieProvider = context.watch<MovieProvider>();
 
     return Scaffold(
       backgroundColor: const Color(0xFF181818),
@@ -80,25 +100,19 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Películas', style: TextStyle(color: Color(0xFFFFC300))),
         centerTitle: true,
         elevation: 4,
-       
-        
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Color(0xFFFFC300)),
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: MovieSearchDelegate(movieProvider),
+                delegate: MovieSearchDelegate(movieProvider), 
               );
             },
           ),
         ],
       ),
-      body: movieProvider.isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFFFFC300)))
-          : movieProvider.error.isNotEmpty
-              ? Center(child: Text('Error: ${movieProvider.error}', style: const TextStyle(color: Colors.redAccent)))
-              : _buildMovieGallery(movieProvider),
+      body: _buildMovieGallery(movieProvider), 
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFFFFC300),
         onPressed: () => _showRecommendedMovies(context),
@@ -109,8 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
 class _MovieCard extends StatelessWidget {
-  final dynamic movie;
+  final Movie movie; 
   const _MovieCard({required this.movie});
 
   void _showMovieDetails(BuildContext context) {
@@ -128,8 +143,9 @@ class _MovieCard extends StatelessWidget {
                 movie.posterPath.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(12),
+                    
                         child: Image.network(
-                          movie.fullPosterPath,
+                          movie.fullPosterUrl,
                           height: 220,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, color: Colors.white70, size: 60),
@@ -209,10 +225,11 @@ class _MovieCard extends StatelessWidget {
             children: [
               Expanded(
                 child: movie.posterPath.isNotEmpty
-                    ? Image.network(
-                        movie.fullPosterPath,
+                    ? CachedNetworkImage( 
+                        imageUrl: movie.fullPosterUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, color: Colors.white70, size: 60),
+                        errorWidget: (context, url, error) => const Icon(Icons.broken_image, color: Colors.white70, size: 60),
+                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                       )
                     : const Icon(Icons.movie, color: Colors.white70, size: 60),
               ),
@@ -237,6 +254,7 @@ class _MovieCard extends StatelessWidget {
     );
   }
 }
+
 
 class MovieSearchDelegate extends SearchDelegate {
   final MovieProvider movieProvider;
@@ -276,7 +294,7 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    movieProvider.searchMovies(query);
+
     return Consumer<MovieProvider>(
       builder: (context, provider, child) {
         if (provider.isLoading) {
@@ -310,21 +328,24 @@ class MovieSearchDelegate extends SearchDelegate {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      IconButton(
-        icon: const Icon(Icons.search, color: Color(0xFFFFC300)),
-        onPressed: () {
-          movieProvider.searchMovies(query);
-          showResults(context);
-        },
-      ),
       if (query.isNotEmpty)
         IconButton(
           icon: const Icon(Icons.clear, color: Color(0xFFFFC300)),
           onPressed: () {
             query = '';
+            context.read<MovieProvider>().searchMovies('');
             showSuggestions(context);
           },
         ),
+
+      IconButton(
+        icon: const Icon(Icons.search, color: Color(0xFFFFC300)),
+        onPressed: () {
+
+          context.read<MovieProvider>().searchMovies(query);
+          showResults(context);
+        },
+      ),
     ];
   }
 

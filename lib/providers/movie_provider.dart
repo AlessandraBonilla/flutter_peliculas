@@ -35,11 +35,11 @@ final List<Movie> _recommendedMovies = [
   
   Movie(
     id: 2,
-    title: 'Dora en busca del Sol Dorado',
-    overview: 'Dora, Diego y Botas se unen a Naiya y Sonny en una emocionante búsqueda para encontrar el antiguo tesoro inca: el Sol Dorado.',
-    posterPath: 'https://www.themoviedb.org/t/p/w1280/sVLSOnGfNXj7VVGBgOz5cNa0lDz.jpg',
-    voteAverage: 7.3,
-    releaseDate: '2025-07-02',
+    title: 'La Sustancia ',
+    overview: 'Tú, pero mejor en todos los sentidos. Esa es la promesa de la sustancia, un producto revolucionario basado en la división celular, que crea un alter ego más joven, más bello, más perfecto.',
+    posterPath: 'https://www.themoviedb.org/t/p/w1280/w1PiIqM89r4AM7CiMEP4VLCEFUn.jpg',
+    voteAverage: 6.5,
+    releaseDate: '2024-09-20',
   ),
 ];
   bool _isLoading = false;

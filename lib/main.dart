@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/movie_provider.dart';
+import '../providers/movie_provider.dart';
 import 'screens/home_screen.dart';
 
 void main() {
@@ -22,7 +22,25 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App de Películas',
-      home: const HomeScreen(),
+      home: const ResponsiveWrapper(),
+    );
+  }
+}
+
+class ResponsiveWrapper extends StatelessWidget {
+  const ResponsiveWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Aquí puedes personalizar más según tamaños específicos
+        return SafeArea(
+          child: Scaffold(
+            body: HomeScreen(),
+          ),
+        );
+      },
     );
   }
 }

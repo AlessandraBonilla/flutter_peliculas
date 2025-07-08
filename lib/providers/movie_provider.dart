@@ -9,19 +9,37 @@ class MovieProvider with ChangeNotifier {
 final List<Movie> _recommendedMovies = [
   Movie(
     id: 1,
-    title: 'Pelicula 1',
-    overview: 'Descripción 1',
-    posterPath: '/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg',
-    voteAverage: 8.5,
-    releaseDate: '2022-01-01',
+    title: 'BTS: Yet to Come',
+    overview: 'Únase a RM, Jin, SUGA, j-hope, Jimin, V y Jung Kook en este corte cinematográfico especial, reeditado y remezclado para la pantalla grande. Mire nuevos ángulos de primer plano y una vista completamente nueva de todo el concierto de BTS Yet To Come en Busan. Con canciones exitosas de toda la carrera del grupo, incluidas "Dynamite", "Butter" e "IDOL", además del primer concierto de "Run BTS" del último álbum del grupo, Proof.',
+    posterPath: 'https://www.themoviedb.org/t/p/w1280/f3L3nKsx5wGr620c1QQKTk6h0JX.jpg',
+    voteAverage: 8.6,
+    releaseDate: '2023-02-01',
   ),
   Movie(
     id: 2,
-    title: 'Pelicula 2',
-    overview: 'Descripción 2',
-    posterPath: '/xBKGJQsAIeweesB79KC89FpBrVr.jpg',
-    voteAverage: 7.9,
-    releaseDate: '2021-12-15',
+    title: 'Squid Game: Season 3',
+    overview: 'Se centra en las consecuencias de la fallida rebelión de Gi-hun y la traición del Líder (In-ho). La temporada explora cómo Gi-hun lidia con la culpa y el fracaso mientras se enfrenta a juegos cada vez más letales.',
+    posterPath: 'https://www.themoviedb.org/t/p/w1280/74qMRUy0lwkBBi39vsQVerIDkHj.jpg',
+    voteAverage: 8.9,
+    releaseDate: '2025-06-27',
+  ),
+  
+  Movie(
+    id: 2,
+    title: 'MEGAN 2.0',
+    overview: 'Con el futuro de la existencia humana en juego, Gemma se da cuenta de que la única opción es resucitar a M3GAN y darle unas cuantas mejoras, haciéndola más rápida, más fuerte y más letal.',
+    posterPath: 'https://www.themoviedb.org/t/p/w1280/w8llBJfNIJoQY9UV8p1eOBTyEjP.jpg',
+    voteAverage: 6.3,
+    releaseDate: '2025-06-26',
+  ),
+  
+  Movie(
+    id: 2,
+    title: 'La Sustancia ',
+    overview: 'Tú, pero mejor en todos los sentidos. Esa es la promesa de la sustancia, un producto revolucionario basado en la división celular, que crea un alter ego más joven, más bello, más perfecto.',
+    posterPath: 'https://www.themoviedb.org/t/p/w1280/w1PiIqM89r4AM7CiMEP4VLCEFUn.jpg',
+    voteAverage: 6.5,
+    releaseDate: '2024-09-20',
   ),
 ];
   bool _isLoading = false;
